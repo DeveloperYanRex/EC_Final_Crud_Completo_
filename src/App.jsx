@@ -1,42 +1,21 @@
-import { useEffect, useState } from 'react'
-import { Card } from './components/Card'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+import { List } from './pages/List'
+import { Create } from './pages/Create'
 
 import './App.css'
 
-const MODULOS = [
-  { title: 'Módulo de Usuario', description: 'Este modulo es de usuario', },
-  { title: 'Módulo de Productos', description: 'Este modulo es de productos', },
-  { title: 'Módulo de Finanzas', description: 'Este modulo es de finanzas', },
-  { title: 'Módulo de Reporte', description: 'Este modulo es de Reporte', },
-  { title: 'Módulo de Ventas', description: 'Ventas para la tienda en mayor ganancias' }
-]
-
 function App() {
-  const [name, setName] = useState('')
-  const [isActive, setIsActive] = useState(false)
-
-  const [pokemons, setPokemons] = useState([])
-
-  useEffect(() => {
-    const fetchPokemon = async () => {
-      const { results, count, next } = await fetch('https://pokeapi.co/api/v2/pokemon')
-        .then((e) => e.json())
-
-      setPokemons(results)
-    }
-    fetchPokemon()
-  }, [])
-
+  // routing
   return (
-    <>
-      <div className='list-pokemons'>
-        {
-          pokemons.map((e) => (
-            <Card title={e.name} description={e.url} />
-          ))
-        }
-      </div>
-    </>
+    <div className='container'>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<List/>}></Route>
+          <Route path='/create' element={<Create/>}></Route>
+        </Routes>
+      </BrowserRouter>
+    </div>
   )
 }
 
