@@ -35,3 +35,8 @@ export function FormCreateCategory() {
         </Form >
     )
 }
+
+//este comando para levantar el servidor de json-server: y cmabiar el puerto a 3001 
+// para se puede realizar peticiones para el CRUD de categorias y productos
+//se usa en la dentro carpeta backend en la terminal
+//json-server --watch database.json --port 3001
