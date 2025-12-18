@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Form, Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom';
 
-export function FormCreateProduct() {
+export function FormEditProduct({ id }) {
 
     const [nombre, setNombre] = useState('')
     const [precio, setPrecio] = useState('')
@@ -11,22 +11,32 @@ export function FormCreateProduct() {
     const [categorias, setCategorias] = useState([])
 
     const navigate = useNavigate()
-    // Cargar categorías para el select
+// Cargar datos del producto a editar y categorías para el select
     useEffect(() => {
+        const fetchProduct = async () => {
+            const product = await fetch(`http://localhost:3001/productos/${id}`)
+                .then((e) => e.json())
+            setNombre(product.nombre)
+            setPrecio(product.precio)
+            setCategoria(product.categoria)
+            setImagen(product.imagen)
+        }
+        fetchProduct()
+
         const fetchCategorias = async () => {
             const cats = await fetch('http://localhost:3001/categorias')
                 .then((e) => e.json())
             setCategorias(cats)
         }
         fetchCategorias()
-    }, [])
-    // Manejar el envío del formulario
-    const handlerRegistrar = async (event) => {
+    }, [id])
+
+    const handlerActualizar = async (event) => {
         event.preventDefault();
 
-        await fetch('http://localhost:3001/productos', {
+        await fetch(`http://localhost:3001/productos/${id}`, {
 
-            method: "POST",
+            method: "PUT",
             headers: {
                 "Content-Type": "application/json",
             },
@@ -40,18 +50,18 @@ export function FormCreateProduct() {
 
         navigate("/")
     }
-    // Renderizar el formulario
+
     return (
-        <Form onSubmit={handlerRegistrar}>
-            <Form.Group className='mb-3' controlId='createProduct.nombre'>
+        <Form onSubmit={handlerActualizar}>
+            <Form.Group className='mb-3' controlId='editProduct.nombre'>
                 <Form.Label>Nombre</Form.Label>
                 <Form.Control type='text' value={nombre} onChange={(e) => setNombre(e.target.value)} />
             </Form.Group>
-            <Form.Group className='mb-3' controlId='createProduct.precio'>
+            <Form.Group className='mb-3' controlId='editProduct.precio'>
                 <Form.Label>Precio</Form.Label>
                 <Form.Control type='number' value={precio} onChange={(e) => setPrecio(e.target.value)} />
             </Form.Group>
-            <Form.Group className='mb-3' controlId='createProduct.categoria'>
+            <Form.Group className='mb-3' controlId='editProduct.categoria'>
                 <Form.Label>Categoría</Form.Label>
                 <Form.Select value={categoria} onChange={(e) => setCategoria(e.target.value)}>
                     <option value="">Selecciona una categoría</option>
@@ -60,11 +70,11 @@ export function FormCreateProduct() {
                     ))}
                 </Form.Select>
             </Form.Group>
-            <Form.Group className='mb-3' controlId='createProduct.imagen'>
+            <Form.Group className='mb-3' controlId='editProduct.imagen'>
                 <Form.Label>Imágen</Form.Label>
                 <Form.Control type='text' value={imagen} onChange={(e) => setImagen(e.target.value)} />
             </Form.Group>
-            <Button type="submit">Registrar</Button>
+            <Button type="submit">Actualizar</Button>
         </Form >
     )
 }

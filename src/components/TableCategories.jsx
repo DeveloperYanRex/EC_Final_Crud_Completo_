@@ -1,7 +1,7 @@
 import { Table, Button } from 'react-bootstrap'
 
-export function TableProducts({products, onEdit, onDelete}) {
-    const header = ["#", "Nombre", "Precio", "Categoria", "Imagen", "Acciones"]
+export function TableCategories({categories, onEdit, onDelete}) {
+    const header = ["#", "Nombre", "Acciones"]
     
     return (
         <>
@@ -14,13 +14,10 @@ export function TableProducts({products, onEdit, onDelete}) {
                     </tr>
                 </thead>
                 <tbody>
-                    {products.map(e => (
+                    {categories.map(e => (
                         <tr key={e.id}>
                             <td>{e.id}</td>
                             <td>{e.nombre}</td>
-                            <td>{e.precio}</td>
-                            <td>{e.categoria}</td>
-                            <td><img src={e.imagen} alt="" width={50} /> </td>
                             <td>
                                 <Button variant="warning" size="sm" onClick={() => onEdit(e)}>Editar</Button>{' '}
                                 <Button variant="danger" size="sm" onClick={() => onDelete(e.id)}>Eliminar</Button>
